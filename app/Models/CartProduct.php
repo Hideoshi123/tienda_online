@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Cart;
+use App\Models\Product;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -18,4 +20,13 @@ class CartProduct extends Model
 		'quantity',
     ];
 
+	public function product()
+	{
+		return $this->belongsTo(Product::class, 'product_id', 'id');
+	}
+
+	public function cart()
+	{
+		return $this->belongsTo(Cart::class, 'cart_id', 'id');
+	}
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use App\Models\CartProduct;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -15,4 +17,14 @@ class Cart extends Model
     protected $fillable = [
         'user_id',
 	];
+
+	public function user()
+	{
+		return $this->belongsTo(User::class, 'user_id', 'id');
+	}
+
+	public function cartProducts()
+	{
+		return $this->hasMany(CartProduct::class, 'cart_id', 'id');
+	}
 }

@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
 			'address' => 'Barrio el Japon, calle 9, casa 22-11',
 			'phone_number' => '3136409683',
 			'email' => 'narazaky0307@gmail.com',
-			'password' => bcrypt(123456789),
+			'password' => '123456789',
 		]);
     }
 }

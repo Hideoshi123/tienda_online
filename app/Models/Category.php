@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Product;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -16,4 +17,16 @@ class Category extends Model
 		'name',
     ];
 
+
+	//Accesores
+	public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = strtolower($value);
+    }
+
+
+	public function products()
+	{
+		return $this->hasMany(Product::class, 'category_id', 'id');
+	}
 }
