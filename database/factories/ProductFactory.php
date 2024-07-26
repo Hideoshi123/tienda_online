@@ -11,8 +11,8 @@ class ProductFactory extends Factory
 
 	private function createBigWord()
 	{
-		$word1 = fake()->word();
-		$word2 = fake()->word();
+		$word1 = fake()->unique()->word();
+		$word2 = fake()->unique()->word();
 
 		return $word1 . $word2;
 	}

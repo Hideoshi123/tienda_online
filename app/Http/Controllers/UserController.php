@@ -9,12 +9,11 @@ use App\Http\Requests\User\UserRequest;
 
 class UserController extends Controller
 {
-
     public function index(Request $request)
     {
-        $user = User::get();
+        $users = User::get();
 		if (!$request->ajax()) return view();
-		return response()->json(['user' => $user], 200);
+		return response()->json(['user' => $users], 200);
     }
 
 
@@ -36,16 +35,18 @@ class UserController extends Controller
     }
 
 
-    public function show($id)
+    /*public function show(Request $request, User $user)
     {
-        //
+        if (!$request->ajax()) return view();
+		return response()->json([], 204);
     }
 
 
-    public function edit($id)
+    public function edit(Request $request, User $user)
     {
-        //
-    }
+        if (!$request->ajax()) return view();
+		return response()->json(['user' => $user], 200);
+    }*/
 
 
     public function update(UserRequest $request, User $user)

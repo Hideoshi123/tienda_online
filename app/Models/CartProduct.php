@@ -29,4 +29,21 @@ class CartProduct extends Model
 	{
 		return $this->belongsTo(Cart::class, 'cart_id', 'id');
 	}
+
+	// Manejo de eventos
+    protected static function boot()
+	{
+	    parent::boot();
+
+	    static::deleting(function ($cartProduct) {
+	        // Obtener el producto relacionado
+	        $product = $cartProduct->product;
+
+	        if ($product) {
+	            // Restar la cantidad al stock del producto
+	            $product->stock += $cartProduct->quantity; // Aumentar el stock
+	            $product->save();
+	        }
+	    });
+	}
 }

@@ -18,6 +18,12 @@ class Cart extends Model
         'user_id',
 	];
 
+	protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
 	public function user()
 	{
 		return $this->belongsTo(User::class, 'user_id', 'id');
@@ -26,5 +32,16 @@ class Cart extends Model
 	public function cartProducts()
 	{
 		return $this->hasMany(CartProduct::class, 'cart_id', 'id');
+	}
+
+	// Manejo de eventos
+	protected static function boot()
+	{
+	    parent::boot();
+
+	    static::deleting(function ($cart) {
+	        // Eliminar todos los registros de CartProduct relacionados
+	        $cart->cartProducts()->delete();
+	    });
 	}
 }

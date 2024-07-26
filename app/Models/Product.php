@@ -23,20 +23,27 @@ class Product extends Model
 
 
 	protected $appends = [
-		'capital_letters',
-		'capital_letter'
+		'capital_letters_name',
+		'capital_letter_description'
 	];
 
+	protected $hidden = [
+		'name',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
 	//Accesores
-	public function setCapitalLettersAttribute($value)
+	public function getCapitalLettersNameAttribute()
     {
-        $this->attributes['name'] = ucwords($value);
+        return ucwords($this->name);
     }
 
 
-	public function setCapitalLetterAttribute($value)
+	public function getCapitalLetterDescriptionAttribute()
     {
-        $this->attributes['description'] = ucfirst($value);
+        return ucfirst($this->description);
     }
 
 
@@ -62,4 +69,22 @@ class Product extends Model
 	{
 		return $this->hasMany(CartProduct::class, 'product_id', 'id');
 	}
+
+	//Manejar los eventos
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($product) {
+            if (is_null($product->category_id)) {
+                // Obtener el ID de la categoría con el nombre 'sincategoria'
+                $category = Category::where('name', 'uncategorized')->first();
+                if ($category) {
+                    $product->category_id = $category->id; // Asignar el ID de la categoría
+                } else {
+                    throw new \Exception('Categoría "uncategorized" no encontrada');
+                }
+            }
+        });
+    }
 }
