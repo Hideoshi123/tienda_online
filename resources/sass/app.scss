@@ -21,25 +21,31 @@ body {
 	background-color: rgb(233, 233, 233) !important;
 }
 
-//Contenedor de categorias y productos
-.card-size {
-	max-width: 300px;
+//Cartas de los productos y categorias
+.product-card {
+	transition: transform 0.3s ease-in-out;
 }
-.card-img-top {
-	object-fit: cover;
+.product-card:hover {
+	transform: scale(1.05);
+}
+.product-img {
 	height: 200px;
+	object-fit: cover;
 }
-.container {
-	padding: 0 15px;
+.card-price {
+	color: #28a745;
+	font-size: 1.2rem;
+	font-weight: bold;
 }
-.card {
-	margin: 10px 0;
+.category-title {
+	border-bottom: 2px solid #ddd;
+	padding-bottom: 10px;
 }
-.card-footer {
-	background: #fff;
+.category-section {
+	padding: 20px 0;
 }
-//contenedor del "cargador"
-.spinner-border {
-	width: 3rem;
-	height: 3rem;
-  }
+//Imagen del modal
+.modal-body img {
+	max-width: 100%;
+	height: auto;
+}
