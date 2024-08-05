@@ -8,6 +8,6 @@ class UserRegisterRequest extends UserRequest
 {
     public function rules()
     {
-        return $this->rules;
+        return parent::rules();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
+use App\Models\Cart;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -12,59 +12,76 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-	use HasRoles, HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasRoles, HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
-	protected $fillable = [
-		'number_id',
+    protected $fillable = [
+        'number_id',
+        'name',
+        'last_name',
+        'email',
+        'password',
+    ];
+
+    protected $appends = ['capital_letters'];
+
+    protected $hidden = [
 		'name',
 		'last_name',
-		'email',
-		'password',
-	];
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'password',
+        'remember_token',
+    ];
 
-	protected $appends = ['full_name'];
+    // Lista de atributos a capitalizar y convertir a minúsculas
+    protected $transformedAttributes = ['name', 'last_name'];
 
-	protected $hidden = [
-		'password',
-		'remember_token',
-	];
+    // Accesor
+    public function getCapitalLettersAttribute()
+    {
+        $capitalizedAttributes = [];
 
+        foreach ($this->transformedAttributes as $attribute) {
+            $value = $this->getAttribute($attribute);
+            if ($value) {
+                $capitalizedAttributes[$attribute] = ucwords(strtolower($value));
+            }
+        }
 
-	protected $casts = [
-		'created_at' => 'datetime:Y-m-d',
-		'updated_at' => 'datetime:Y-m-d',
-		// 'is_enable' => 'boolean' //0-1:true,false
-	];
+        return $capitalizedAttributes;
+    }
 
-	/*
-	* Accessor (get)
-	*/
-	public function getFullNameAttribute()
-	{
-		return "{$this->name} {$this->last_name}"; // David Torres
-	}
+    // Mutador
+    public function setAttribute($key, $value)
+    {
+        // Convierte los atributos especificados a minúsculas
+        if (in_array($key, $this->transformedAttributes)) {
+            $value = strtolower($value);
+        }
 
-	/*
-	* Mutadores
-	 */
-	public function setPasswordAttribute($value)
-	{
-		$this->attributes['password'] = bcrypt($value);
-	}
+        return parent::setAttribute($key, $value);
+    }
 
-	public function setRememberTokenAttribute()
-	{
-		$this->attributes['remember_token'] =  Str::random(30);
-	}
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
 
+    // Relaciones entre tablas
+    public function cart()
+    {
+        return $this->hasOne(Cart::class, 'user_id', 'id');
+    }
 
-	public function customerLends()
-	{
-		return $this->hasMany(Lend::class, 'customer_user_id', 'id');
-	}
+	//Manejo de eventos
+    protected static function boot()
+    {
+        parent::boot();
 
-	public function ownerLends()
-	{
-		return $this->hasMany(Lend::class, 'owner_user_id', 'id');
-	}
+        static::deleting(function ($user) {
+            // Eliminar registros relacionados en la tabla carts
+            $user->cart()->delete();
+        });
+    }
 }

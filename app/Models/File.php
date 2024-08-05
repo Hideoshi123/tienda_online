@@ -7,16 +7,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class File extends Model
 {
-	use HasFactory;
+    use HasFactory;
 
-	protected $fillable = [
-		'fileable_id',
-		'fileable_type',
-		'route',
-	];
+    protected $fillable = [
+        'fileable_id',
+        'fileable_type',
+        'route'
+    ];
 
-	public function fileable()
-	{
-		return $this->morphTo();
-	}
+	protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
+    public function fileable()
+    {
+        return $this->morphTo();
+    }
 }

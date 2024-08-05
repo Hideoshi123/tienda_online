@@ -2,7 +2,7 @@
 
 namespace App\Http\Traits;
 
-use App\Models\Book;
+use App\Models\Product;
 use App\Models\File;
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\File as FileSystem;
 
 trait UploadFile
 {
-	private function uploadFile($model, $request)
+    private function uploadFile($model, $request)
 	{
 		if (!isset($request->file)) return;
 		$random = Str::random(20);
@@ -39,7 +39,7 @@ trait UploadFile
 	private function getRoute($model)
 	{
 		$routes = [
-			Book::class => 'images/books',
+			Product::class => 'images/products',
 			User::class => 'images/users'
 		];
 		return $routes[get_class($model)] ?? 'images';

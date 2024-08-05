@@ -17,10 +17,29 @@
 // Vue select
 @import 'vue-select/dist/vue-select.css';
 
-.card_size {
-	width: 18rem;
-}
-
 body {
 	background-color: rgb(233, 233, 233) !important;
 }
+
+//Contenedor de categorias y productos
+.card-size {
+	max-width: 300px;
+}
+.card-img-top {
+	object-fit: cover;
+	height: 200px;
+}
+.container {
+	padding: 0 15px;
+}
+.card {
+	margin: 10px 0;
+}
+.card-footer {
+	background: #fff;
+}
+//contenedor del "cargador"
+.spinner-border {
+	width: 3rem;
+	height: 3rem;
+  }

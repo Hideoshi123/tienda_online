@@ -9,19 +9,19 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {{-- Title --}}
-    <title>{{ env('APP_NAME') }} | {{ $title ?? 'Libros' }}</title>
+    <title>{{ env('APP_NAME') }} | {{ $title ?? 'Tienda' }}</title>
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
-<body class="bg-">
+<body id="app">
 
-    {{-- Menu --}}
-    <x-menu />
+	{{-- Menu --}}
+	<x-menu />
 
     {{-- Content --}}
-    <main id="app">
+    <main>
         <x-alerts />
         {{ $slot }}
     </main>

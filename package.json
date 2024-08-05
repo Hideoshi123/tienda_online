@@ -28,6 +28,7 @@
 	},
 	"dependencies": {
 		"jszip": "^3.10.1",
+		"mitt": "^3.0.1",
 		"pdfmake": "^0.2.7",
 		"vee-validate": "^4.11.1",
 		"yup": "^1.2.0"

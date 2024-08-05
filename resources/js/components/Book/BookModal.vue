@@ -150,7 +150,7 @@ export default {
 			load_category: false,
 			back_errors: {},
 			file: null,
-			image_preview: '/storage/images/books/default.png'
+			image_preview: '/storage/images/products/default.png'
 		}
 	},
 	created() {

@@ -32,10 +32,21 @@
                         </li>
                     @endif
                 @else
+					{{-- Cart --}}
+					@if(session('cartId'))
+					{{-- <p>Carrito ID: {{ session('cartId') }}</p> --}}
+						<a class="dropdown-item" href="{{ route('cart.show') }}">
+							Ir al Carrito
+							<cart-icon />
+						</a>
+					@else
+						<p>No se encontró el carrito.</p>
+					@endif
+
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ Auth::user()->full_name }}
+                            {{ Auth::user()->capital_letters['name'] }}
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -45,20 +56,15 @@
                                 <a class="dropdown-item" href="{{ route('users.index') }}">
                                     Usuarios
                                 </a>
-                            @endrole
-                            @role('admin|librarian')
-                                {{-- Book --}}
-                                <a class="dropdown-item" href="{{ route('books.index') }}">
-                                    Libros
+                                {{-- Products --}}
+                                <a class="dropdown-item" href="{{ route('products.index') }}">
+                                    Productos
                                 </a>
-                            @endrole
-                            @can('categories.index')
-                                {{-- Category --}}
+								{{-- Category --}}
                                 <a class="dropdown-item" href="{{ route('categories.index') }}">
                                     Categorias
                                 </a>
-                            @endcan
-
+                            @endrole
 
                             {{-- Logout --}}
                             <a class="dropdown-item" href="{{ route('logout') }}"
