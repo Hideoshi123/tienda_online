@@ -1,6 +1,18 @@
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}">{{ env('APP_NAME') }}</a>
+        @auth
+            @if (Auth::user()->hasRole('admin'))
+                <!-- Si el usuario es admin, redirige al /users -->
+                <a class="navbar-brand" href="{{ url('/users') }}">{{ env('APP_NAME') }}</a>
+            @else
+                <!-- Si el usuario es comprador o no está autenticado, redirige al / -->
+                <a class="navbar-brand" href="{{ url('/') }}">{{ env('APP_NAME') }}</a>
+            @endif
+        @else
+            <!-- Si el usuario no está autenticado, redirige al / -->
+            <a class="navbar-brand" href="{{ url('/') }}">{{ env('APP_NAME') }}</a>
+        @endauth
+
 
         {{-- Haburguesa --}}
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -32,16 +44,18 @@
                         </li>
                     @endif
                 @else
-					{{-- Cart --}}
-					@if(session('cartId'))
-					{{-- <p>Carrito ID: {{ session('cartId') }}</p> --}}
-						<a class="dropdown-item" href="{{ route('cart.show') }}">
-							Ir al Carrito
-							<cart-icon />
-						</a>
-					@else
-						<p>No se encontró el carrito.</p>
-					@endif
+					@role('buyer')
+						{{-- Cart --}}
+						@if(session('cartId'))
+						{{-- <p>Carrito ID: {{ session('cartId') }}</p> --}}
+							<a class="dropdown-item" href="{{ route('cart.show') }}">
+								Ir al Carrito
+								<cart-icon />
+							</a>
+						@else
+							<p>No se encontró el carrito.</p>
+						@endif
+						@endrole
 
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"

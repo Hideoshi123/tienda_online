@@ -18,17 +18,21 @@ class UserRequest extends FormRequest
             'name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
             'email' => ['required', 'email'],
-            'password' => ['confirmed', 'string', 'min:8'],
+            'password' => ['required', 'confirmed', 'string', 'min:8'],
+            'file' => ['required', 'image'],
+            'role' => ['required', 'string', 'exists:roles,name'],
         ];
 
-        if ($this->method() == 'POST') {
+        if ($this->isMethod('post')) {
+            // Reglas para creación
             $rules['number_id'][] = 'unique:users,number_id';
             $rules['email'][] = 'unique:users,email';
-            $rules['password'][] = 'required';
-        } else {
+        } elseif ($this->isMethod('put') || $this->isMethod('patch')) {
+            // Reglas para actualización
             $rules['number_id'][] = 'unique:users,number_id,' . $this->user->id;
             $rules['email'][] = 'unique:users,email,' . $this->user->id;
             $rules['password'][] = 'nullable';
+            $rules['file'] = ['nullable', 'image'];
         }
 
         return $rules;
@@ -52,6 +56,11 @@ class UserRequest extends FormRequest
             'password.min' => 'La contraseña debe tener al menos 8 caracteres',
             'password.required' => 'La contraseña es requerida en el registro',
             'password.nullable' => 'La contraseña es opcional en la actualización',
+            'file.required' => 'La imagen es requerida.',
+            'file.image' => 'El archivo debe ser una imagen válida',
+            'role.required' => 'El rol es requerido',
+            'role.string' => 'El rol debe ser una cadena válida',
+            'role.exists' => 'El rol seleccionado no existe',
         ];
     }
 }

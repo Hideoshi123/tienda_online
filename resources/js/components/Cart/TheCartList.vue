@@ -4,6 +4,7 @@
 			<span class="visually-hidden">Cargando...</span>
 	  	</div>
 	</div>
+
 	<div v-else>
 	  	<div v-if="listProducts.length > 0">
 			<div
@@ -79,6 +80,7 @@
 	  		listProducts.value = response.data.map(item => ({ ...item,
 													initialQuantity: item.quantity
 	  												}));
+			console.log(listProducts)
 	  		maxQuantities.value = response.data.reduce((acc, item) => {
 				acc[item.product.id] = item.product.stock + item.quantity;
 				return acc;

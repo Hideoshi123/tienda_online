@@ -35,8 +35,6 @@ class ProductFactory extends Factory
 	    return $this->afterCreating(function (Product $product) {
 	        // Lista de posibles archivos
 	        $files = [
-	            '/storage/images/products/default.webp',
-	            '/storage/images/products/funda_almohada.jfif',
 	            '/storage/images/products/pack_gamer.webp',
 				'/storage/images/products/pack_gamer.webp',
 				'/storage/images/products/pala.jpg',

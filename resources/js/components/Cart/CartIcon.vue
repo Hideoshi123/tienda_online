@@ -7,7 +7,6 @@
 
   <script setup>
   import { ref, onMounted, onUnmounted } from 'vue';
-  import axios from 'axios'; // Asegúrate de importar axios si no está importado
   import { emitter } from '@/helpers/eventBus';
 
   const cartQuantity = ref(0);

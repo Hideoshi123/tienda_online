@@ -78,6 +78,25 @@
                 if (!response.isConfirmed) return
                 document.getElementById(`delete_form_${user_id}`).submit();
             };
+
+			document.getElementById('photo').addEventListener('change', function(event) {
+			    const input = event.target;
+			    const file = input.files[0];
+			    const preview = document.getElementById('preview-image');
+
+			    if (file) {
+			        const reader = new FileReader();
+
+			        reader.onload = function(e) {
+			            preview.src = e.target.result;
+			            preview.style.display = 'block';
+			        };
+
+			        reader.readAsDataURL(file);
+			    } else {
+			        preview.style.display = 'none';
+			    }
+			});
         </script>
     </x-slot:scripts>
 </x-app>

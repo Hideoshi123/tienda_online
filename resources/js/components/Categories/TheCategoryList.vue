@@ -1,5 +1,5 @@
 <template>
-	<div class="card">
+    <div class="card">
 		<div class="card-header d-flex justify-content-end">
 			<button class="btn btn-primary" @click="createCategory">Crear categoria</button>
 		</div>
@@ -19,25 +19,31 @@
 		</div>
 	</div>
 	<div v-if="load_modal">
-		<h1>Hola Mundo</h1>
-		<!-- <category-modal :category_data="category" /> -->
+		<!-- <h1>Hola Mundo</h1> -->
+		<category-modal :category_data="category" />
 	</div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
-import { successMessage, handlerErrors, deleteMessage } from '@/helpers/Alerts.js'
+import {ref,onMounted} from 'vue'
+import { handlerErrors, successMessage, deleteMessage } from '@/helpers/Alerts.js'
+import CategoryModal from './CategoryModal.vue'
+import HandlerModal from '@/helpers/HandlerModal.js'
 
 export default {
-	// props: [],
-	setup(/* props */) { /* se monta en beforeCreated */
-		const load_modal = ref(false)
-		const table = ref(null)
-		const category = ref(null)
-		onMounted(() => mounteTable())
+    components: { CategoryModal },
+    //props: [],
+    setup(/* props, context */){ /* se monta en beforeCreated */
+        const categories = ref(false)
+        const table = ref(null)
+        const category = ref(null)
+        const {openModal, closeModal, load_modal} = HandlerModal()
 
-		const mounteTable = () => {
-			table.value = $('#category_table').DataTable({
+        onMounted(()=>index());
+        const index = () => mountedTable()
+
+        const mountedTable = ()=>{
+            table.value = $('#category_table').DataTable({
 				destroy: true,
 				processing: true,
 				serverSide: true,
@@ -66,37 +72,36 @@ export default {
 					}
 				]
 			})
-		}
+        }
 
+        const createCategory = async ()=>{
+            category.value = null
+            await openModal('category_modal')
+        }
 
-		const createCategory = () => {
-			load_modal.value = true
-		}
-
-
-		const editCategory = async (id) => {
-			try {
+        const editCategory= async (id)=>{
+            try {
 				const { data } = await axios.get(`/categories/${id}`)
 				category.value = data.category
-				// await openModal('category_modal')
+				await openModal('category_modal')
 			} catch (error) {
 				await handlerErrors(error)
 			}
+        }
 
-		}
-		const deleteCategory = async (id) => {
-			if (!await deleteMessage()) return
-			try {
+        const deleteCategory= async (id)=>{
+            if(!await deleteMessage()) return
+            try {
 				await axios.delete(`/categories/${id}`)
 				await successMessage({ is_delete: true })
-				// reloadState()
+				reloadState()
 			} catch (error) {
 				await handlerErrors(error)
 			}
-		}
+        }
 
-		const handleAction = (event) => {
-			const button = event.target
+        const handleAction = (event)=>{
+            const button = event.target
 			const category_id = button.getAttribute('data-id')
 
 			if (button.getAttribute('role') == 'edit') {
@@ -104,10 +109,25 @@ export default {
 			} else if (button.getAttribute('role') == 'delete') {
 				deleteCategory(category_id)
 			}
-		}
+        }
 
-		return { handleAction, createCategory, load_modal }
-	}
+        const reloadState = () =>{
+            table.value.destroy()
+            index()
+        }
+
+        return{
+            categories,
+            category,
+            editCategory,
+            deleteCategory,
+            handleAction,
+            reloadState,
+            closeModal,
+            createCategory,
+            load_modal,
+        }
+    }
+
 }
 </script>
-

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Cart;
+use App\Models\File;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -25,6 +26,8 @@ class UserFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (User $user){
+			$file = new File(['route' => '/storage/images/users/user.jpg']);
+            $user->file()->save($file);
             Cart::factory(1)->userId($user)->create();
             $user->assignRole('buyer');
         });

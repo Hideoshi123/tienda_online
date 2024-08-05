@@ -1,7 +1,7 @@
 <section class="row">
 
     <div class="mb-3 col-12">
-        <label for="role">Role</label>
+        <label for="role">Roles</label>
 
         <select id="role" type="number" name="role" class="form-control @error('role') is-invalid @enderror">
             @foreach ($roles as $role)
@@ -85,6 +85,17 @@
             </span>
         @enderror
     </div>
+
+	<div class="mb-3 col-6">
+		<label for="photo">Foto</label>
+		<input id="photo" type="file" name="file" accept=".jpg,.jpeg,.png,.gif,.bmp,.webp" class="form-control @error('file') is-invalid @enderror" />
+		@error('file')
+			<span class="invalid-feedback" role="alert">
+				<strong>{{ $message }}</strong>
+			</span>
+		@enderror
+		<img id="preview-image" src="{{ isset($user) && $user->file ? asset($user->file->route) : '#' }}" alt="Vista previa de la imagen" style="display: {{ isset($user) && $user->file ? 'block' : 'none' }}; max-width: 100%; height: auto; margin-top: 10px;" />
+	</div>
 
     <div class="col-12">
         <a href="{{ route('users.index') }}" class="btn btn-secondary me-2">Cancelar</a>

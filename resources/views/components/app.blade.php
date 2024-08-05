@@ -15,13 +15,12 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
-<body id="app">
-
-	{{-- Menu --}}
-	<x-menu />
+<body>
 
     {{-- Content --}}
-    <main>
+    <main id="app">
+		{{-- Menu --}}
+		<x-menu />
         <x-alerts />
         {{ $slot }}
     </main>

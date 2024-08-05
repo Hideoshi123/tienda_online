@@ -21,25 +21,23 @@ class LoginController extends Controller
     }
 
     public function login(AuthRequest $request)
-    {
-        $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-
-            // Verifica si el usuario ya tiene un carrito, si no, crea uno nuevo
-            if (!$user->cart) {
-                $cart = Cart::create(['user_id' => $user->id]);
-                session(['cartId' => $cart->id]);
-            } else {
-                session(['cartId' => $user->cart->id]);
-            }
-
-            return redirect()->intended($this->redirectPath());
-        }
-
-        return back()->withErrors([
-            'email' => 'Las credenciales ingresadas no coinciden con ninguna cuenta.',
-        ]);
-    }
+	{
+	    $credentials = $request->only('email', 'password');
+	    if (Auth::attempt($credentials)) {
+	        $user = Auth::user();
+	        if (!$user->cart) {
+	            $cart = Cart::create(['user_id' => $user->id]);
+	            session(['cartId' => $cart->id]);
+	        } else {
+	            session(['cartId' => $user->cart->id]);
+	        }
+	        // Verifica si el usuario tiene el rol de admin
+	        if ($user->hasRole('admin')) {
+	            // Redirige a la ruta específica para administradores
+	            return redirect()->route('users.index');
+	        }
+	        // Redirige al usuario a la ruta de destino predeterminada
+	        return redirect()->intended($this->redirectPath());
+	    }
+	}
 }

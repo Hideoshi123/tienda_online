@@ -20,7 +20,6 @@ class Category extends Model
 	protected $appends = ['capital_letter'];
 
 	protected $hidden = [
-		'name',
         'created_at',
         'updated_at',
         'deleted_at',

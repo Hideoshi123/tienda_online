@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Traits\UploadFile;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\User\UserRequest;
 
 class UserController extends Controller
 {
+
+	use UploadFile;
+
 	public function index(Request $request)
 	{
 		$users = User::with('roles')->get();
@@ -29,46 +34,58 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-	// public function create()
-	// {
-	// 	$roles = Role::all()->pluck('name');
-	// 	return view('users.create', compact('roles'));
-	// }
+	public function create()
+	{
+		$roles = Role::all()->pluck('name');
+		return view('users.create', compact('roles'));
+	}
 
 
-	// public function store(UserRequest $request)
-	// {
-	// 	$user = new User($request->all());
-	// 	$user->save();
-	// 	$user->assignRole($request->role);
-    //     $cart = new Cart();
-	// 	$cart->user_id = $user->id;
-	// 	$cart->save();
-	// 	if (!$request->ajax()) return back()->with('success', 'User created');
-	// 	return response()->json(['status' => 'User created', 'user' => $user, 'user' => $user], 201);
-	// }
+	public function store(UserRequest $request)
+	{
+	    try {
+	        DB::beginTransaction();
+	        $user = new User($request->all());
+	        $user->save();
+	        $user->assignRole($request->role);
+	        $cart = new Cart();
+	        $cart->user_id = $user->id;
+	        $cart->save();
+	        $this->uploadFile($user, $request);
+	        DB::commit();
+			return redirect()->route('users.index')->with('success', 'Usuario creado exitosamente.');
+	    } catch (\Throwable) {
+	        DB::rollBack();
+	        return redirect()->back()->with('error', 'Ocurrió un error al crear el usuario.')->withInput();
+	    }
+	}
+
+	public function edit(User $user)
+	{
+		$roles = Role::all()->pluck('name');
+		return view('users.edit', compact('user', 'roles'));
+	}
 
 
-	// public function edit(User $user)
-	// {
-	// 	$roles = Role::all()->pluck('name');
-	// 	return view('users.edit', compact('user', 'roles'));
-	// }
+	public function update(UserRequest $request, User $user)
+	{
+		try {
+			DB::beginTransaction();
+			$user->update($request->all());
+			$user->syncRoles([$request->role]);
+			$this->uploadFile($user, $request);
+			DB::commit();
+			return redirect()->route('users.index')->with('success', 'Usuario actualizado exitosamente.');
+		} catch (\Throwable) {
+			DB::rollBack();
+			return redirect()->back()->with('error', 'Ocurrió un error al crear el usuario.')->withInput();
+		}
+	}
 
-
-	// public function update(UserRequest $request, User $user)
-	// {
-	// 	$user->update($request->all());
-	// 	$user->syncRoles([$request->role]);
-	// 	if (!$request->ajax()) return back()->with('success', 'User updated');
-	// 	return response()->json([], 204);
-	// }
-
-
-	// public function destroy(Request $request, User $user)
-	// {
-	// 	$user->delete();
-	// 	if (!$request->ajax()) return back()->with('success', 'User deleted');
-	// 	return response()->json([], 204);
-	// }
+	public function destroy(User $user)
+	{
+		$user->delete();
+		$this->deleteFile($user);
+		return redirect()->route('users.index')->with('success', 'Usuario eliminado exitosamente.');
+	}
 }

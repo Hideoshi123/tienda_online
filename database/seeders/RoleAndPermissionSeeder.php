@@ -2,40 +2,54 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 class RoleAndPermissionSeeder extends Seeder
 {
-
     public function run()
     {
         $permissionsBuyer = [
-			'users.log',
-			'cart.show',
-			'cart.edit',
-			'cart.getCartQuantity',
-			'cartproducts.store',
-			'cartproducts.update',
-			'cartproducts.destroy',
-		];
-		$permissionsAdmin = array_merge([
-		], $permissionsBuyer);
+            'users.log',
+            'cart.show',
+            'cart.edit',
+            'cart.getCartQuantity',
+            'cartproducts.store',
+            'cartproducts.update',
+            'cartproducts.destroy',
+        ];
 
-        //Roles
-        $admin = Role::create(['name' => 'admin']);
-        $Buyer = Role::create(['name' => 'buyer']);
+        $permissionsAdmin = [
+            'users.index',
+            'users.create',
+            'users.store',
+            'users.edit',
+            'users.update',
+            'users.destroy',
+			'categories.index',
+			'categories.get-all',
+			'categories.store',
+			'categories.update',
+			'categories.destroy',
+			'categories.get-all-dt',
+			'categories.show',
+        ];
 
-        foreach ($permissionsAdmin as $permission) {
-            $permission = Permission::create(['name' => $permission]);
+        // Crear Roles
+        $admin = Role::firstOrCreate(['name' => 'admin']);
+        $buyer = Role::firstOrCreate(['name' => 'buyer']);
+
+        // Crear y Asignar Permisos a Admin
+        foreach ($permissionsAdmin as $permissionName) {
+            $permission = Permission::firstOrCreate(['name' => $permissionName]);
             $admin->givePermissionTo($permission);
         }
 
-        foreach ($permissionsBuyer as $permission) {
-            $permission = Permission::where(['name' => $permission])->first();
-            $Buyer->givePermissionTo($permission);
+        // Crear y Asignar Permisos a Buyer
+        foreach ($permissionsBuyer as $permissionName) {
+            $permission = Permission::firstOrCreate(['name' => $permissionName]);
+            $buyer->givePermissionTo($permission);
         }
     }
 }

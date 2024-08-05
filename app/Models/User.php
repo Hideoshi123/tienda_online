@@ -74,6 +74,11 @@ class User extends Authenticatable
         return $this->hasOne(Cart::class, 'user_id', 'id');
     }
 
+	public function file()
+    {
+        return $this->morphOne(File::class, 'fileable');
+    }
+
 	//Manejo de eventos
     protected static function boot()
     {
