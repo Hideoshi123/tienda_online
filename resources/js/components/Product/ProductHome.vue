@@ -35,7 +35,12 @@
 					v-for="(productsByCategory, category) in groupProductsByCategory"
 					:key="category"
 		  		>
-					<h4 class="mb-3 category-title">{{ category }}</h4>
+					<h4 class="mb-3 category-title">
+						{{ category }}
+						<button @click="redirectToCategory(category.id)" class="btn btn-primary ms-2">
+            				Ver todos los productos de esta categoría
+            			</button>
+					</h4>
 					<div class="row">
 			  			<div class="col-md-4 mb-4" v-for="product in productsByCategory" :key="product.id">
 							<div class="card product-card h-100 shadow-sm">
@@ -75,7 +80,7 @@
   	const reloadData = async () => {
 		loading.value = true;
 		try {
-	  		const response = await axios.get('/products/index');
+	  		const response = await axios.get('/products/get-all');
 			products.value = response.data;
 	  		if (filteredProducts.value.length === 0 && categories.value.length > 0) {
 				selectedCategory.value = '';
@@ -122,6 +127,10 @@
 	  		selectedCategory.value = '';
 		}
   	});
+
+	const redirectToCategory = (categoryId) => {
+  		window.location.href = `/products/category/${categoryId}`;
+	};
 
   	onMounted(() => {
 		reloadData();

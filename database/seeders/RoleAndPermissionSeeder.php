@@ -33,7 +33,14 @@ class RoleAndPermissionSeeder extends Seeder
 			'categories.update',
 			'categories.destroy',
 			'categories.get-all-dt',
+			'categories.get-all',
 			'categories.show',
+			'products.index',
+			'products.get-all-dt',
+			'products.store',
+			'products.show',
+			'products.update',
+			'products.destroy',
         ];
 
         // Crear Roles

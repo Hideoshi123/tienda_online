@@ -12,7 +12,6 @@ class HomeController extends Controller
 	{
 		/** @var \App\Models\User\User $user */
 		$user = Auth::user();
-
 		if ($user->hasRole('admin')) return redirect('/users');
 		return redirect('/');
 	}

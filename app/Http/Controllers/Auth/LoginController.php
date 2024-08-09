@@ -25,18 +25,17 @@ class LoginController extends Controller
 	    $credentials = $request->only('email', 'password');
 	    if (Auth::attempt($credentials)) {
 	        $user = Auth::user();
-	        if (!$user->cart) {
-	            $cart = Cart::create(['user_id' => $user->id]);
-	            session(['cartId' => $cart->id]);
-	        } else {
-	            session(['cartId' => $user->cart->id]);
-	        }
-	        // Verifica si el usuario tiene el rol de admin
-	        if ($user->hasRole('admin')) {
-	            // Redirige a la ruta específica para administradores
+			if ($user->hasRole('buyer')){
+				if (!$user->cart) {
+					$cart = Cart::create(['user_id' => $user->id]);
+					session(['cartId' => $cart->id]);
+				} else {
+					session(['cartId' => $user->cart->id]);
+				}
+			}
+	        else if ($user->hasRole('admin')) {
 	            return redirect()->route('users.index');
 	        }
-	        // Redirige al usuario a la ruta de destino predeterminada
 	        return redirect()->intended($this->redirectPath());
 	    }
 	}

@@ -26,7 +26,7 @@ class UserFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (User $user){
-			$file = new File(['route' => '/storage/images/users/user.jpg']);
+			$file = new File(['route' => '/storage/images/users/default.jpg']);
             $user->file()->save($file);
             Cart::factory(1)->userId($user)->create();
             $user->assignRole('buyer');

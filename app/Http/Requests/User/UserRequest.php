@@ -6,6 +6,17 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
 {
+
+	protected $rules = [
+		'number_id' => ['required', 'numeric'],
+		'name' => ['required', 'string'],
+		'last_name' => ['required', 'string'],
+		'email' => ['required', 'email'],
+		'password' => ['required', 'confirmed', 'string', 'min:8'],
+		'file' => ['required', 'image'],
+		'role' => ['required', 'string', 'exists:roles,name'],
+	];
+
     public function authorize()
     {
         return true;
@@ -13,29 +24,20 @@ class UserRequest extends FormRequest
 
     public function rules()
     {
-        $rules = [
-            'number_id' => ['required', 'numeric'],
-            'name' => ['required', 'string'],
-            'last_name' => ['required', 'string'],
-            'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed', 'string', 'min:8'],
-            'file' => ['required', 'image'],
-            'role' => ['required', 'string', 'exists:roles,name'],
-        ];
-
-        if ($this->isMethod('post')) {
+        if ($this->Method() == 'POST') {
             // Reglas para creación
-            $rules['number_id'][] = 'unique:users,number_id';
-            $rules['email'][] = 'unique:users,email';
-        } elseif ($this->isMethod('put') || $this->isMethod('patch')) {
+            $this->rules['number_id'][] = 'unique:users,number_id';
+            $this->rules['email'][] = 'unique:users,email';
+        } else {
             // Reglas para actualización
-            $rules['number_id'][] = 'unique:users,number_id,' . $this->user->id;
-            $rules['email'][] = 'unique:users,email,' . $this->user->id;
-            $rules['password'][] = 'nullable';
-            $rules['file'] = ['nullable', 'image'];
+            $this->rules['number_id'][] = 'unique:users,number_id,' . $this->user->id;
+            $this->rules['email'][] = 'unique:users,email,' . $this->user->id;
+            $this->rules['password'] = ['nullable', 'confirmed', 'string', 'min:8'] ;
+			$this->rules['role'] = ['nullable', 'string', 'exists:roles,name'];
+            $this->rules['file'] = ['nullable', 'image'];
         }
 
-        return $rules;
+        return $this->rules;
     }
 
     public function messages()

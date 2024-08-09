@@ -32,8 +32,6 @@ class Product extends Model
 	];
 
 	protected $hidden = [
-		'name',
-		'description',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -57,7 +55,6 @@ class Product extends Model
             get: function ($value, $attributes){
                 return Str::limit($attributes['description'], 50, '...');
             },
-            // set: fn($value) => Str::upper($value)
         );
     }
 
@@ -106,6 +103,12 @@ class Product extends Model
                 } else {
                     throw new \Exception('Categoría "uncategorized" no encontrada');
                 }
+            }
+        });
+
+		static::deleting(function ($product) {
+            foreach ($product->cartProducts as $cartProduct) {
+                $cartProduct->delete();
             }
         });
     }

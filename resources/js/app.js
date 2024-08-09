@@ -9,6 +9,8 @@ import ProductHome from './components/Product/ProductHome.vue'
 import ProductModalBuyer from './components/Product/ProductModalBuyer.vue'
 import CartIcon from './components/Cart/CartIcon.vue'
 import TheCartList from './components/Cart/TheCartList.vue'
+import TheProductList from './components/Product/TheProductList.vue'
+import ProductModal from './components/Product/ProductModal.vue'
 
 const app = createApp({
 	components: {
@@ -17,6 +19,8 @@ const app = createApp({
 		CartIcon,
 		TheCartList,
         TheCategoryList,
+		TheProductList,
+		ProductModal,
 	}
 })
 

@@ -19,18 +19,15 @@ class UserController extends Controller
 	public function index(Request $request)
 	{
 		$users = User::with('roles')->get();
-		//dd($users[0]->toArray());
 		if (!$request->ajax()) return view('users.index', compact('users'));
 		return response()->json(['users' => $users], 200);
 	}
 
 	public function log()
     {
-        // Obtiene el usuario autenticado
 		/** @var \App\Models\User\User $user */
         $user = Auth::user();
 		$user->load('cart');
-        // Devuelve los datos del usuario
         return response()->json($user);
     }
 
@@ -48,9 +45,11 @@ class UserController extends Controller
 	        $user = new User($request->all());
 	        $user->save();
 	        $user->assignRole($request->role);
-	        $cart = new Cart();
-	        $cart->user_id = $user->id;
-	        $cart->save();
+			if ($request->role === 'buyer'){
+				$cart = new Cart();
+	        	$cart->user_id = $user->id;
+	        	$cart->save();
+			}
 	        $this->uploadFile($user, $request);
 	        DB::commit();
 			return redirect()->route('users.index')->with('success', 'Usuario creado exitosamente.');
@@ -73,6 +72,19 @@ class UserController extends Controller
 			DB::beginTransaction();
 			$user->update($request->all());
 			$user->syncRoles([$request->role]);
+			if ($request->role === 'buyer'){
+				$existingCart = Cart::where('user_id', $user->id)->first();
+				if (!$existingCart) {
+					$cart = new Cart();
+	        		$cart->user_id = $user->id;
+	        		$cart->save();
+				}
+			} else {
+				$existingCart = Cart::where('user_id', $user->id)->first();
+				if ($existingCart) {
+					$existingCart->delete();
+				}
+			}
 			$this->uploadFile($user, $request);
 			DB::commit();
 			return redirect()->route('users.index')->with('success', 'Usuario actualizado exitosamente.');

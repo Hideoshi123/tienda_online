@@ -85,7 +85,6 @@ class User extends Authenticatable
         parent::boot();
 
         static::deleting(function ($user) {
-            // Eliminar registros relacionados en la tabla carts
             $user->cart()->delete();
         });
     }

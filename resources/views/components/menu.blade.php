@@ -47,7 +47,6 @@
 					@role('buyer')
 						{{-- Cart --}}
 						@if(session('cartId'))
-						{{-- <p>Carrito ID: {{ session('cartId') }}</p> --}}
 							<a class="dropdown-item" href="{{ route('cart.show') }}">
 								Ir al Carrito
 								<cart-icon />

@@ -34,7 +34,7 @@
 	</div>
 </template>
 <script setup>
-  	import { ref, computed, onMounted, onBeforeUnmount, defineEmits } from 'vue';
+  	import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
   	import { handlerErrors, successMessage } from '@/helpers/Alerts.js';
   	import BackendError from '../Components/BackendError.vue';
   	import { emitter } from '@/helpers/eventBus';

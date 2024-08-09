@@ -8,24 +8,27 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {{-- Title --}}
-    <title>{{ env('APP_NAME') }} | {{ $title ?? 'Tienda' }}</title>
+    <title>{{ env('APP_NAME') }} | {{$title ?? 'Libros' }}</title>
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="bg-">
 
     {{-- Content --}}
     <main id="app">
 		{{-- Menu --}}
 		<x-menu />
-        <x-alerts />
+
+        <div class="container mt-4">
+            <x-alerts />
+        </div>
+
         {{ $slot }}
     </main>
 
-    {{ $scripts ?? '' }}
+    {{$scripts ?? ''}}
 </body>
 
 </html>

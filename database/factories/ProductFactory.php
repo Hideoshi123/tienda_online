@@ -31,21 +31,10 @@ class ProductFactory extends Factory
     }
 
     public function configure()
-	{
-	    return $this->afterCreating(function (Product $product) {
-	        // Lista de posibles archivos
-	        $files = [
-	            '/storage/images/products/pack_gamer.webp',
-				'/storage/images/products/pack_gamer.webp',
-				'/storage/images/products/pala.jpg',
-				'/storage/images/products/zapato.jpg',
-	        ];
-
-	        // Seleccionar un archivo aleatorio de la lista
-	        $randomFile = $files[array_rand($files)];
-
-	        $file = new File(['route' => $randomFile]);
-	        $product->file()->save($file);
-	    });
-	}
+    {
+        return $this->afterCreating(function (Product $product){
+            $file = new File(['route' => '/storage/images/products/default.jpg']);
+            $product->file()->save($file);
+        });
+    }
 }

@@ -19,7 +19,6 @@
 		</div>
 	</div>
 	<div v-if="load_modal">
-		<!-- <h1>Hola Mundo</h1> -->
 		<category-modal :category_data="category" />
 	</div>
 </template>
@@ -29,7 +28,6 @@ import {ref,onMounted} from 'vue'
 import { handlerErrors, successMessage, deleteMessage } from '@/helpers/Alerts.js'
 import CategoryModal from './CategoryModal.vue'
 import HandlerModal from '@/helpers/HandlerModal.js'
-
 export default {
     components: { CategoryModal },
     //props: [],

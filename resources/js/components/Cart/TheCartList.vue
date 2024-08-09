@@ -17,7 +17,7 @@
 					<div class="flex-grow-1">
 			  			<h5 class="mb-3 text-primary">{{ item.product.capital_letters_name }}</h5>
 			  			<p class="mb-3">{{ item.product.capital_letter_description }}</p>
-			  			<p class="mb-3" v-if="item.product.stock !== 0"><strong>Stock:</strong> {{ item.product.stock }}</p>
+			  			<p class="mb-3" v-if="item.product.stock !== 0"><strong>Disponibles:</strong> {{ item.product.stock }}</p>
 			  			<p class="mb-3"><strong>Price:</strong> {{ item.product.price }} $</p>
 			  			<div class="input-group mb-3">
 							<button type="button" class="btn btn-outline-secondary" @click="decreaseQuantity(item)">-</button>
@@ -157,4 +157,4 @@
   	onMounted(() => {
 		getUser();
   	});
-  </script>
+</script>

@@ -87,10 +87,6 @@
                                 </div>
                             </div>
 
-							<div class="col-md-6">
-								<input type="hidden" name="role" value="buyer" readonly>
-							</div>
-
                             <div class="row mb-3">
                                 <label for="file" class="col-md-4 col-form-label text-md-end">Subir imagen</label>
 
