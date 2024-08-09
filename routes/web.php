@@ -14,6 +14,8 @@ Auth::routes();
 Route::middleware('check.role.or.guest:buyer')->group(function () {
     Route::get('/', [ProductController::class, 'home'])->name('products.home');
     Route::get('/products/get-all', [ProductController::class, 'getAll'])->name('products.getAll');
+	Route::get('/products/category/{categoryId}', [ProductController::class, 'getForCategory'])->name('products.getForCategory');
+	Route::get('/products/get-all-by-category/{categoryId}', [ProductController::class, 'getProductsByCategory'])->name('products.getAllByCategory');
 });
 
 Route::group(['middleware' => ['auth']], function () {

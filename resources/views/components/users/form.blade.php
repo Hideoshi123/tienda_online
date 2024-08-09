@@ -94,7 +94,7 @@
 				<strong>{{ $message }}</strong>
 			</span>
 		@enderror
-		<img id="preview-image" src="{{ isset($user) && $user->file ? asset($user->file->route) : '#' }}" alt="Vista previa de la imagen" style="display: {{ isset($user) && $user->file ? 'block' : 'none' }}; max-width: 100%; height: auto; margin-top: 10px;" />
+		<img id="preview-image" src="{{ isset($user) && $user->file ? asset($user->file->route) : 'storage/images/users/default.jpg' }}" alt="Vista previa de la imagen" style="display: {{ isset($user) && $user->file ? 'block' : 'none' }}; max-width: 100%; height: auto; margin-top: 10px;" />
 	</div>
 
     <div class="col-12">

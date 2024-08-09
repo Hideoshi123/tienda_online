@@ -17,8 +17,19 @@
 // Vue select
 @import 'vue-select/dist/vue-select.css';
 
+//Cuerpo de la pagina
 body {
-	background-color: rgb(233, 233, 233) !important;
+	padding-top: 70px; /* Ajusta este valor según la altura de tu barra de navegación */
+}
+//Menu de navegacion
+.navbar-brand {
+	font-size: 1.5rem; /* Aumenta el tamaño del texto del nombre */
+}
+.navbar-nav .nav-link {
+	font-size: 1.1rem; /* Aumenta el tamaño del texto de los enlaces */
+}
+.dropdown-menu {
+	font-size: 1rem; /* Ajusta el tamaño del texto en el menú desplegable si es necesario */
 }
 
 //Cartas de los productos y categorias
@@ -75,7 +86,7 @@ body {
 	font-size: 0.8em;
 	font-weight: bold;
 }
-//Responsive
+//Responsive del carrito
 @media (max-width: 768px) {
 	.cart-icon {
 	  	font-size: 20px;

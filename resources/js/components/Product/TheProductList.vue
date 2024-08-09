@@ -45,7 +45,6 @@
 			destroy: true,
 			processing: true,
 			serverSide: true,
-			scrollX: true,
 			order: [[0, 'asc']],
 			autoWidth: false,
 			dom: 'Bfrtip',

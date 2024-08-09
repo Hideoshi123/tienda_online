@@ -69,7 +69,7 @@
 	</div>
 </template>
 <script setup>
-  	import { ref, onMounted, watch } from 'vue'
+  	import { ref, onMounted } from 'vue'
   	import axios from 'axios'
   	import { handlerErrors, successMessage } from '@/helpers/Alerts.js'
 

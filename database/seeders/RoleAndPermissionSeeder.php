@@ -18,6 +18,7 @@ class RoleAndPermissionSeeder extends Seeder
             'cartproducts.store',
             'cartproducts.update',
             'cartproducts.destroy',
+			'products.getForCategory',
         ];
 
         $permissionsAdmin = [

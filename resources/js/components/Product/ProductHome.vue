@@ -32,22 +32,22 @@
 			<div v-if="filteredProducts.length > 0">
 		  		<div
 					class="category-section mb-4"
-					v-for="(productsByCategory, category) in groupProductsByCategory"
-					:key="category"
+					v-for="(productsByCategory, categoryName) in groupProductsByCategory"
+					:key="productsByCategory[0]?.category.id"
 		  		>
-					<h4 class="mb-3 category-title">
-						{{ category }}
-						<button @click="redirectToCategory(category.id)" class="btn btn-primary ms-2">
+					<div class="mb-3 category-title d-flex justify-content-around">
+						<h4>{{ categoryName }}</h4>
+						<button @click="redirectToCategory(productsByCategory[0].category.id)" class="btn btn-warning">
             				Ver todos los productos de esta categoría
             			</button>
-					</h4>
+					</div>
 					<div class="row">
 			  			<div class="col-md-4 mb-4" v-for="product in productsByCategory" :key="product.id">
 							<div class="card product-card h-100 shadow-sm">
 				  				<img :src="product.file.route" class="card-img-top product-img" :alt="product.title">
-				  				<div class="card-body">
+				  				<div class="card-body d-flex align-items-center flex-column">
 									<h5 class="card-title">{{ product.capital_letters_name }}</h5>
-									<p class="card-text">{{ product.short_description }}</p>
+									<p class="card-text">{{ product.format_description }}</p>
 									<p class="card-price">{{ product.price }}$</p>
 				  				</div>
 				  				<div class="card-footer text-center">
@@ -129,6 +129,7 @@
   	});
 
 	const redirectToCategory = (categoryId) => {
+		console.log(categoryId)
   		window.location.href = `/products/category/${categoryId}`;
 	};
 

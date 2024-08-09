@@ -10,8 +10,8 @@
 					<img :src="product.file.route" class="img-fluid mb-3 mb-md-0 me-md-4" style="max-width: 300px; height: auto; object-fit: cover;" alt="Product Image">
 					<div class="w-100">
 			  			<p class="mb-3">{{ product.capital_letter_description }}</p>
-			  			<p class="mb-3"><strong>Stock:</strong> {{ product.stock }}</p>
-			  			<p class="mb-3"><strong>Price:</strong> {{ product.price }} $</p>
+			  			<p class="mb-3"><strong>Cantidad:</strong> {{ product.stock }}</p>
+			  			<p class="mb-3"><strong>Precio:</strong> {{ product.price }} $</p>
 			  			<div v-if="isLoggedIn">
 							<form @submit.prevent="handleSubmit">
 				  				<BackendError :errors="back_errors" />

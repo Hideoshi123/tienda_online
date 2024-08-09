@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use App\Http\Traits\UploadFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -48,6 +49,32 @@ class ProductController extends Controller
 	    }
 	    return response()->json($selectedProducts);
 	}
+
+	public function getForCategory($categoryId)
+    {
+        return view('products.category', ['categoryId' => $categoryId]);
+    }
+
+    public function getProductsByCategory($categoryId)
+    {
+        $category = Category::findOrFail($categoryId);
+        $user = Auth::user();
+        $query = Product::with('file')
+            ->where('category_id', $categoryId)
+            ->where('stock', '>', 0);
+
+        if ($user) {
+            $cart_id = $user->cart->id;
+            $query->whereDoesntHave('cartProducts', function ($query) use ($cart_id) {
+                $query->where('cart_id', $cart_id);
+            });
+        }
+        $products = $query->get();
+        return response()->json([
+            'category' => $category,
+            'products' => $products
+        ]);
+    }
 
 	public function get()
 	{

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
     <div class="container">
         @auth
             @if (Auth::user()->hasRole('admin'))
@@ -13,8 +13,7 @@
             <a class="navbar-brand" href="{{ url('/') }}">{{ env('APP_NAME') }}</a>
         @endauth
 
-
-        {{-- Haburguesa --}}
+        {{-- Hamburguesa --}}
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
@@ -23,7 +22,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav me-auto">
-
+                <!-- Puedes agregar enlaces de navegación adicionales aquí -->
             </ul>
 
             <!-- Right Side Of Navbar -->
@@ -44,22 +43,23 @@
                         </li>
                     @endif
                 @else
-					@role('buyer')
-						{{-- Cart --}}
-						@if(session('cartId'))
-							<a class="dropdown-item" href="{{ route('cart.show') }}">
-								Ir al Carrito
-								<cart-icon />
-							</a>
-						@else
-							<p>No se encontró el carrito.</p>
-						@endif
-						@endrole
+                    @role('buyer')
+                        {{-- Cart --}}
+                        @if(session('cartId'))
+                            <a class="dropdown-item" href="{{ route('cart.show') }}">
+                                Ir al Carrito
+                                <cart-icon />
+                            </a>
+                        @else
+                            <p>No se encontró el carrito.</p>
+                        @endif
+                    @endrole
 
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ Auth::user()->capital_letters['name'] }}
+                            <img src="{{ Auth::user()->file->route }}" alt="Foto de perfil" class="rounded-circle me-2" width="40" height="40">
+                            <span class="fw-bold">{{ Auth::user()->capital_letters['name'] }}</span>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -73,9 +73,9 @@
                                 <a class="dropdown-item" href="{{ route('products.index') }}">
                                     Productos
                                 </a>
-								{{-- Category --}}
+                                {{-- Category --}}
                                 <a class="dropdown-item" href="{{ route('categories.index') }}">
-                                    Categorias
+                                    Categorías
                                 </a>
                             @endrole
 
@@ -89,7 +89,6 @@
                                 @csrf
                             </form>
                         </div>
-
                     </li>
                 @endguest
             </ul>

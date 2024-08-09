@@ -28,7 +28,7 @@ trait UploadFile
 			->where('fileable_type', get_class($model))
 			->first();
 		if (!$file) return;
-		$fileIsNotDefault = $file->route != "/storage/{$this->getRoute($model)}/default.png";
+		$fileIsNotDefault = $file->route != "/storage/{$this->getRoute($model)}/default.jpg";
 		$issetFile = FileSystem::exists(public_path($file->route));
 		if ($issetFile && $fileIsNotDefault) {
 			FileSystem::delete(public_path($file->route));
